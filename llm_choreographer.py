@@ -1,4 +1,5 @@
 import openai
+import os
 from typing import List, Dict, Any
 import json
 import config
@@ -9,11 +10,13 @@ class LLMChoreographer:
     """LLM编舞生成器，使用GPT生成舞蹈动作建议 - 增强版"""
     
     def __init__(self):
-        if not config.OPENAI_API_KEY:
+        # 动态获取API密钥
+        api_key = os.getenv('OPENAI_API_KEY')
+        if not api_key:
             raise ValueError("请设置OPENAI_API_KEY环境变量")
         
         # 使用新版本OpenAI API (1.0.0+)
-        self.client = openai.OpenAI(api_key=config.OPENAI_API_KEY)
+        self.client = openai.OpenAI(api_key=api_key)
         print(f"🔧 LLMChoreographer初始化完成，使用增强版舞蹈参考系统")
     
     def _call_openai(self, messages, max_tokens=100, temperature=0.7):

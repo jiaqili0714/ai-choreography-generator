@@ -6,6 +6,7 @@
 import openai
 import json
 import jsonschema
+import os
 from typing import List, Dict, Any, Optional
 import config
 from action_database import get_action_candidates, get_synonym_replacement, create_rhythm_placeholder
@@ -15,10 +16,12 @@ class EnhancedLLMChoreographer:
     """增强LLM编舞生成器"""
     
     def __init__(self):
-        if not config.OPENAI_API_KEY:
+        # 动态获取API密钥
+        api_key = os.getenv('OPENAI_API_KEY')
+        if not api_key:
             raise ValueError("请设置OPENAI_API_KEY环境变量")
         
-        self.client = openai.OpenAI(api_key=config.OPENAI_API_KEY)
+        self.client = openai.OpenAI(api_key=api_key)
         
         # JSON Schema定义
         self.choreography_schema = {
