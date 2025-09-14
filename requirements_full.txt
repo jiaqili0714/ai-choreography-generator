@@ -1,0 +1,50 @@
+# AI Choreography Generator - Full Professional Dependencies
+# For Docker deployment with all advanced audio analysis libraries
+
+# Core audio processing
+librosa>=0.10.1
+numpy>=1.26.0
+scipy>=1.11.1
+soundfile>=0.12.1
+
+# Advanced audio analysis (requires system dependencies)
+madmom>=0.16.1
+essentia>=2.1b6.dev1110
+musicnn>=0.1.0
+
+# AI and LLM
+openai>=1.0.0
+
+# Web framework
+streamlit>=1.28.1
+
+# Data processing and visualization
+matplotlib>=3.7.2
+pandas>=2.0.3
+
+# JSON validation and processing
+jsonschema>=4.17.0
+pydantic>=2.0.0
+
+# Environment management
+python-dotenv>=1.0.0
+
+# Additional dependencies
+setuptools>=65.0.0
+wheel>=0.40.0
+
+# Audio processing dependencies
+librosa[display]>=0.10.1
+audioread>=3.0.0
+resampy>=0.4.0
+
+# Machine learning dependencies
+tensorflow>=2.13.0
+keras>=2.13.0
+
+# System dependencies (handled by Docker)
+# - build-essential
+# - libsndfile1
+# - ffmpeg
+# - libasound2-dev
+# - portaudio19-dev

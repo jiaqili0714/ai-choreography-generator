@@ -3,7 +3,19 @@ import os
 import json
 import tempfile
 import base64
-from streamlit_cloud_choreography_generator import StreamlitCloudChoreographyGenerator
+# 自动选择生成器版本
+try:
+    # 尝试导入完整版本（需要高级库）
+    from enhanced_choreography_generator import EnhancedChoreographyGenerator
+    GENERATOR_CLASS = EnhancedChoreographyGenerator
+    GENERATION_MODE = "enhanced_professional"
+    print("🎭 使用专业版编舞生成器（支持madmom、essentia、musicnn）")
+except ImportError as e:
+    # 回退到兼容版本
+    from streamlit_cloud_choreography_generator import StreamlitCloudChoreographyGenerator
+    GENERATOR_CLASS = StreamlitCloudChoreographyGenerator
+    GENERATION_MODE = "enhanced_compatible"
+    print(f"🔄 使用兼容版编舞生成器（{e}）")
 import config
 from dance_references import get_youtube_search_url, get_video_search_suggestions
 from language_config import get_text, language_selector, init_language
@@ -48,6 +60,15 @@ else:
 # 添加API密钥获取帮助
 with st.sidebar.expander(get_text('api_key_guide_title', language)):
     st.markdown(get_text('api_key_guide', language))
+
+# 显示生成模式
+st.sidebar.markdown("---")
+if GENERATION_MODE == "enhanced_professional":
+    st.sidebar.success("🎭 专业模式")
+    st.sidebar.info("支持madmom、essentia、musicnn等高级音频分析库")
+else:
+    st.sidebar.info("🔄 兼容模式")
+    st.sidebar.info("使用librosa增强分析，适合云部署")
 
 # 初始化session state
 if 'choreography_result' not in st.session_state:
@@ -111,8 +132,8 @@ with tab1:
                     progress_bar = st.progress(0)
                     status_text = st.empty()
                     
-                    # 初始化Streamlit Cloud兼容生成器
-                    generator = StreamlitCloudChoreographyGenerator()
+                    # 初始化生成器（自动选择版本）
+                    generator = GENERATOR_CLASS()
                     
                     # 生成编舞
                     status_text.text(get_text('analyzing', language))
