@@ -93,6 +93,8 @@ def get_current_segment_info(current_time, segments):
 
 def format_time(seconds):
     """格式化时间显示"""
+    # 确保seconds是标量
+    seconds = float(seconds)
     minutes = int(seconds // 60)
     seconds = int(seconds % 60)
     return f"{minutes:02d}:{seconds:02d}"
@@ -161,9 +163,9 @@ with tab1:
                     # 基本信息
                     col1, col2, col3, col4 = st.columns(4)
                     with col1:
-                        st.metric("BPM", f"{result['audio_info']['bpm']:.1f}")
+                        st.metric("BPM", f"{float(result['audio_info']['bpm']):.1f}")
                     with col2:
-                        st.metric("时长", f"{result['audio_info']['duration']:.1f}秒")
+                        st.metric("时长", f"{float(result['audio_info']['duration']):.1f}秒")
                     with col3:
                         st.metric("舞蹈风格", result['choreography']['dance_style'])
                     with col4:
@@ -240,7 +242,7 @@ with tab2:
             with col2:
                 st.metric("结束时间", format_time(current_segment['end_time']))
             with col3:
-                st.metric("持续时间", f"{current_segment['duration']:.1f}秒")
+                st.metric("持续时间", f"{float(current_segment['duration']):.1f}秒")
             
             # 简洁的舞蹈建议显示
             col1, col2 = st.columns([2, 1])
@@ -323,7 +325,7 @@ with tab2:
                 '片段': f"第{i+1}段",
                 '开始时间': format_time(segment['start_time']),
                 '结束时间': format_time(segment['end_time']),
-                '持续时间': f"{segment['duration']:.1f}秒",
+                '持续时间': f"{float(segment['duration']):.1f}秒",
                 '参考动作': ', '.join(segment_choreo.get('reference_moves', ['基础动作'])),
                 '难度': f"{segment_choreo['difficulty']}/5",
                 '能量': f"{segment_choreo['energy_level']}/5"

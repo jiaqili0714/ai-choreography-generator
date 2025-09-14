@@ -237,8 +237,8 @@ class StreamlitCloudAudioAnalyzer:
         # 构建结果
         result = {
             'audio_info': {
-                'duration': features['duration'],
-                'bpm': features['tempo'],
+                'duration': float(features['duration']),
+                'bpm': float(features['tempo']),
                 'total_beats': len(features['beat_times']),
                 'sample_rate': sr
             },
