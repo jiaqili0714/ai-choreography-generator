@@ -3,7 +3,7 @@ import os
 import json
 import tempfile
 import base64
-from enhanced_choreography_generator import EnhancedChoreographyGenerator
+from streamlit_cloud_choreography_generator import StreamlitCloudChoreographyGenerator
 import config
 from dance_references import get_youtube_search_url, get_video_search_suggestions
 from language_config import get_text, language_selector, init_language
@@ -111,8 +111,8 @@ with tab1:
                     progress_bar = st.progress(0)
                     status_text = st.empty()
                     
-                    # 初始化增强生成器
-                    generator = EnhancedChoreographyGenerator()
+                    # 初始化Streamlit Cloud兼容生成器
+                    generator = StreamlitCloudChoreographyGenerator()
                     
                     # 生成编舞
                     status_text.text(get_text('analyzing', language))
