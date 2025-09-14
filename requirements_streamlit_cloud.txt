@@ -1,0 +1,32 @@
+# AI Choreography Generator - Streamlit Cloud Compatible Dependencies
+# Simplified version for cloud deployment
+
+# Core audio processing (essential)
+librosa>=0.10.1
+numpy>=1.26.0
+scipy>=1.11.1
+soundfile>=0.12.1
+
+# AI and LLM
+openai>=1.0.0
+
+# Web framework
+streamlit>=1.28.1
+
+# Data processing and visualization
+matplotlib>=3.7.2
+pandas>=2.0.3
+
+# JSON validation and processing
+jsonschema>=4.17.0
+pydantic>=2.0.0
+
+# Environment management
+python-dotenv>=1.0.0
+
+# Additional dependencies for Python 3.13 compatibility
+setuptools>=65.0.0
+wheel>=0.40.0
+
+# Note: Advanced audio libraries (madmom, essentia, musicnn) are not included
+# due to Streamlit Cloud compatibility issues. The system will use fallback methods.

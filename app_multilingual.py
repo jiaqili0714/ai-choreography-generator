@@ -3,72 +3,58 @@ import os
 import json
 import tempfile
 import base64
-# 自动选择生成器版本
-try:
-    # 尝试导入专业版本（需要高级库）
-    from enhanced_choreography_generator_pro import EnhancedChoreographyGeneratorPro
-    GENERATOR_CLASS = EnhancedChoreographyGeneratorPro
-    GENERATION_MODE = "professional_enhanced"
-    print("🎭 使用专业版编舞生成器（支持madmom、essentia、musicnn）")
-except ImportError as e:
-    # 回退到兼容版本
-    from streamlit_cloud_choreography_generator import StreamlitCloudChoreographyGenerator
-    GENERATOR_CLASS = StreamlitCloudChoreographyGenerator
-    GENERATION_MODE = "enhanced_compatible"
-    print(f"🔄 使用兼容版编舞生成器（{e}）")
+from choreography_generator import ChoreographyGenerator
 import config
 from dance_references import get_youtube_search_url, get_video_search_suggestions
-from language_config import get_text, language_selector, init_language
-
-# 初始化语言设置
-language = init_language()
 
 # 页面配置
 st.set_page_config(
-    page_title=get_text('title', language),
+    page_title="AI编舞生成器 - 音乐播放器版",
     page_icon="💃",
     layout="wide"
 )
 
 # 标题和介绍
-st.title(get_text('title', language))
-st.markdown(f"""
-### {get_text('subtitle', language)}
+st.title("🎵 AI编舞生成器 - 音乐播放器版")
+st.markdown("""
+### 让AI为你的音乐创作专属舞蹈！
 
-{get_text('description', language)}
+这个工具可以：
+- 🎶 分析音频文件的BPM和节拍
+- 🕺 推荐最适合的舞蹈风格
+- 💃 生成8拍片段的详细动作
+- 📝 输出完整的编舞草稿
+- 🎬 提供经典舞蹈动作的参考视频
+- 🎵 集成音乐播放器，实时显示舞蹈建议
+
+支持格式：MP3, WAV
 """)
 
 # 侧边栏配置
-st.sidebar.header(get_text('config_title', language))
-
-# 语言选择器
-language = language_selector()
-
-st.sidebar.markdown(f"### {get_text('api_settings', language)}")
+st.sidebar.header("⚙️ 配置")
+st.sidebar.markdown("### API设置")
 
 # 用户输入API密钥
-api_key = st.sidebar.text_input(get_text('api_key_input', language), type="password", 
-                               help=get_text('api_key_help', language))
+api_key = st.sidebar.text_input("OpenAI API Key", type="password", 
+                               help="请输入你的OpenAI API密钥")
 
 # 设置环境变量
 if api_key:
     os.environ['OPENAI_API_KEY'] = api_key
-    st.sidebar.success(get_text('api_key_success', language))
+    st.sidebar.success("✅ API密钥已设置")
 else:
-    st.sidebar.warning(get_text('api_key_warning', language))
+    st.sidebar.warning("⚠️ 请设置OpenAI API密钥")
 
 # 添加API密钥获取帮助
-with st.sidebar.expander(get_text('api_key_guide_title', language)):
-    st.markdown(get_text('api_key_guide', language))
-
-# 显示生成模式
-st.sidebar.markdown("---")
-if GENERATION_MODE == "professional_enhanced":
-    st.sidebar.success("🎭 专业模式")
-    st.sidebar.info("支持madmom、essentia、musicnn等高级音频分析库")
-else:
-    st.sidebar.info("🔄 兼容模式")
-    st.sidebar.info("使用librosa增强分析，适合云部署")
+with st.sidebar.expander("🔑 如何获取API密钥"):
+    st.markdown("""
+    1. 访问: https://platform.openai.com/api-keys
+    2. 点击 "Create new secret key"
+    3. 复制生成的密钥（以sk-开头）
+    4. 粘贴到上方输入框中
+    
+    **注意**: 你的API密钥只会在当前会话中使用，不会被保存。
+    """)
 
 # 初始化session state
 if 'choreography_result' not in st.session_state:
@@ -98,26 +84,26 @@ def format_time(seconds):
     return f"{minutes:02d}:{seconds:02d}"
 
 # 主界面
-tab1, tab2 = st.tabs([get_text('upload_tab', language), get_text('player_tab', language)])
+tab1, tab2 = st.tabs(["🎵 音频文件上传", "🎬 音乐播放器"])
 
 with tab1:
-    st.header(get_text('upload_title', language))
+    st.header("上传音频文件")
     
     uploaded_file = st.file_uploader(
-        f"{get_text('upload_title', language)} (MP3/WAV)",
+        "选择音频文件 (MP3/WAV)",
         type=['mp3', 'wav'],
-        help=get_text('upload_help', language)
+        help="支持MP3和WAV格式的音频文件"
     )
     
     if uploaded_file is not None:
         # 显示文件信息
-        st.success(f"✅ {get_text('file_uploaded', language)}: {uploaded_file.name}")
-        st.info(f"📊 {get_text('file_size_mb', language)}: {uploaded_file.size / 1024 / 1024:.2f} MB")
+        st.success(f"✅ 文件上传成功: {uploaded_file.name}")
+        st.info(f"📊 文件大小: {uploaded_file.size / 1024 / 1024:.2f} MB")
         
         # 生成编舞按钮
-        if st.button(get_text('generate_button', language), type="primary"):
+        if st.button("🎭 生成编舞", type="primary"):
             if not api_key:
-                st.error(get_text('no_api_key_error', language))
+                st.error("❌ 请先在侧边栏设置OpenAI API密钥")
             else:
                 try:
                     # 确保API密钥已设置到环境变量
@@ -132,21 +118,21 @@ with tab1:
                     progress_bar = st.progress(0)
                     status_text = st.empty()
                     
-                    # 初始化生成器（自动选择版本）
-                    generator = GENERATOR_CLASS()
+                    # 初始化生成器
+                    generator = ChoreographyGenerator()
                     
                     # 生成编舞
-                    status_text.text(get_text('analyzing', language))
+                    status_text.text("🎵 正在分析音频...")
                     progress_bar.progress(20)
                     
                     result = generator.generate_choreography_from_file(tmp_file_path)
                     
-                    status_text.text(get_text('generating', language))
+                    status_text.text("🎭 正在生成编舞...")
                     progress_bar.progress(80)
                     
                     # 显示结果
                     progress_bar.progress(100)
-                    status_text.text(get_text('complete', language))
+                    status_text.text("✅ 编舞生成完成！")
                     
                     # 清理临时文件
                     os.unlink(tmp_file_path)
@@ -156,7 +142,7 @@ with tab1:
                     st.session_state.audio_file = uploaded_file
                     
                     # 显示编舞结果
-                    st.success(f"🎉 {get_text('choreography_generated', language)}")
+                    st.success("🎉 编舞生成成功！")
                     
                     # 基本信息
                     col1, col2, col3, col4 = st.columns(4)
@@ -170,22 +156,22 @@ with tab1:
                         st.metric("片段数", result['choreography']['total_segments'])
                     
                     # 编舞总结
-                    st.subheader(f"📝 {get_text('choreography_summary', language)}")
+                    st.subheader("📝 编舞总结")
                     st.write(result['choreography']['summary'])
                     
                     # 跳转到播放器标签页
-                    st.info(f"🎬 {get_text('switch_to_player_tab', language)}")
+                    st.info("🎬 编舞生成完成！请切换到'音乐播放器'标签页开始练习。")
                     
                 except Exception as e:
-                    st.error(f"{get_text('error', language)}: {str(e)}")
+                    st.error(f"❌ 生成编舞时出错: {str(e)}")
                     if 'tmp_file_path' in locals() and os.path.exists(tmp_file_path):
                         os.unlink(tmp_file_path)
 
 with tab2:
-    st.header(get_text('music_player', language))
+    st.header("🎬 音乐播放器")
     
     if st.session_state.choreography_result is None:
-        st.warning(f"⚠️ {get_text('upload_first_warning', language)}")
+        st.warning("⚠️ 请先上传音频文件并生成编舞")
     else:
         result = st.session_state.choreography_result
         audio_file = st.session_state.audio_file
@@ -335,10 +321,10 @@ with tab2:
         st.dataframe(df, use_container_width=True)
         
         # 下载按钮
-        st.subheader(f"💾 {get_text('download_choreography', language)}")
+        st.subheader("💾 下载编舞文件")
         json_str = json.dumps(result, ensure_ascii=False, indent=2)
         st.download_button(
-            label=f"📥 {get_text('download_json', language)}",
+            label="📥 下载编舞JSON文件",
             data=json_str,
             file_name=f"choreography_{audio_file.name.split('.')[0]}.json",
             mime="application/json"
@@ -346,9 +332,9 @@ with tab2:
 
 # 页脚
 st.markdown("---")
-st.markdown(f"""
+st.markdown("""
 <div style='text-align: center'>
-    <p>🎵 {get_text('footer_title', language)}</p>
-    <p>💡 {get_text('footer_tip', language)}</p>
+    <p>🎵 AI编舞生成器 - 音乐播放器版 | 让音乐与舞蹈完美结合</p>
+    <p>💡 提示：使用时间滑块查看不同时间点的舞蹈建议，点击搜索链接找到教学视频</p>
 </div>
 """, unsafe_allow_html=True)

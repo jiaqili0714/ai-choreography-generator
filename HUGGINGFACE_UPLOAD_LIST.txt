@@ -1,0 +1,40 @@
+# 🚀 Hugging Face Space 上传文件清单
+
+## 📋 必需文件 (按顺序上传)
+
+### 1. 核心文件
+- app.py
+- requirements.txt
+- README.md
+
+### 2. 功能模块
+- streamlit_cloud_choreography_generator.py
+- streamlit_cloud_audio_analyzer.py
+- enhanced_llm_choreographer.py
+- action_database.py
+- language_config.py
+- dance_references.py
+- config.py
+
+## 📝 上传步骤
+
+1. 在你的Hugging Face Space页面
+2. 点击 "Files and versions" 标签页
+3. 点击 "Add file" → "Upload files"
+4. 按照上述顺序上传文件
+5. 等待上传完成
+
+## ⚙️ 环境变量设置
+
+在 "Settings" 标签页添加：
+- Name: OPENAI_API_KEY
+- Value: 你的OpenAI API密钥 (以sk-开头)
+
+## 🎯 部署完成后
+
+访问你的Space URL:
+https://huggingface.co/spaces/your-username/your-space-name
+
+## 🎉 完成！
+
+上传所有文件后，等待2-5分钟让应用启动完成。

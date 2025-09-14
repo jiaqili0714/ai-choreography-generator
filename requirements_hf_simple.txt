@@ -1,0 +1,25 @@
+# AI Choreography Generator - Hugging Face Spaces Simple Dependencies
+# Minimal dependencies for successful deployment
+
+# Core audio processing
+librosa
+numpy
+scipy
+soundfile
+
+# AI and LLM
+openai
+
+# Web framework
+streamlit
+
+# Data processing
+matplotlib
+pandas
+
+# JSON processing
+jsonschema
+pydantic
+
+# Environment
+python-dotenv
