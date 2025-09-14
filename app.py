@@ -90,8 +90,8 @@ with tab1:
     
     if uploaded_file is not None:
         # 显示文件信息
-        st.success(f"✅ 文件上传成功: {uploaded_file.name}")
-        st.info(f"📊 文件大小: {uploaded_file.size / 1024 / 1024:.2f} MB")
+        st.success(f"✅ {get_text('file_uploaded', language)}: {uploaded_file.name}")
+        st.info(f"📊 {get_text('file_size_mb', language)}: {uploaded_file.size / 1024 / 1024:.2f} MB")
         
         # 生成编舞按钮
         if st.button(get_text('generate_button', language), type="primary"):
@@ -135,7 +135,7 @@ with tab1:
                     st.session_state.audio_file = uploaded_file
                     
                     # 显示编舞结果
-                    st.success("🎉 编舞生成成功！")
+                    st.success(f"🎉 {get_text('choreography_generated', language)}")
                     
                     # 基本信息
                     col1, col2, col3, col4 = st.columns(4)
@@ -149,11 +149,11 @@ with tab1:
                         st.metric("片段数", result['choreography']['total_segments'])
                     
                     # 编舞总结
-                    st.subheader("📝 编舞总结")
+                    st.subheader(f"📝 {get_text('choreography_summary', language)}")
                     st.write(result['choreography']['summary'])
                     
                     # 跳转到播放器标签页
-                    st.info("🎬 编舞生成完成！请切换到'音乐播放器'标签页开始练习。")
+                    st.info(f"🎬 {get_text('switch_to_player_tab', language)}")
                     
                 except Exception as e:
                     st.error(f"{get_text('error', language)}: {str(e)}")
@@ -164,7 +164,7 @@ with tab2:
     st.header(get_text('music_player', language))
     
     if st.session_state.choreography_result is None:
-        st.warning("⚠️ 请先上传音频文件并生成编舞")
+        st.warning(f"⚠️ {get_text('upload_first_warning', language)}")
     else:
         result = st.session_state.choreography_result
         audio_file = st.session_state.audio_file
@@ -314,10 +314,10 @@ with tab2:
         st.dataframe(df, use_container_width=True)
         
         # 下载按钮
-        st.subheader("💾 下载编舞文件")
+        st.subheader(f"💾 {get_text('download_choreography', language)}")
         json_str = json.dumps(result, ensure_ascii=False, indent=2)
         st.download_button(
-            label="📥 下载编舞JSON文件",
+            label=f"📥 {get_text('download_json', language)}",
             data=json_str,
             file_name=f"choreography_{audio_file.name.split('.')[0]}.json",
             mime="application/json"
@@ -325,9 +325,9 @@ with tab2:
 
 # 页脚
 st.markdown("---")
-st.markdown("""
+st.markdown(f"""
 <div style='text-align: center'>
-    <p>🎵 AI编舞生成器 - 音乐播放器版 | 让音乐与舞蹈完美结合</p>
-    <p>💡 提示：使用时间滑块查看不同时间点的舞蹈建议，点击搜索链接找到教学视频</p>
+    <p>🎵 {get_text('footer_title', language)}</p>
+    <p>💡 {get_text('footer_tip', language)}</p>
 </div>
 """, unsafe_allow_html=True)
