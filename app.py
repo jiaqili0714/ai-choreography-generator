@@ -33,15 +33,22 @@ st.markdown("""
 # 侧边栏配置
 st.sidebar.header("⚙️ 配置")
 st.sidebar.markdown("### API设置")
-api_key = st.sidebar.text_input("OpenAI API Key", type="password", 
-                               help="请输入你的OpenAI API密钥")
 
-# 立即设置环境变量
-if api_key:
+# 尝试从Streamlit secrets中获取API密钥
+try:
+    api_key = st.secrets["OPENAI_API_KEY"]
+    st.sidebar.success("✅ API密钥已从配置中加载")
     os.environ['OPENAI_API_KEY'] = api_key
-    st.sidebar.success("✅ API密钥已设置")
-else:
-    st.sidebar.warning("⚠️ 请设置OpenAI API密钥")
+except (KeyError, AttributeError):
+    # 如果secrets中没有，则显示输入框（用于本地开发）
+    api_key = st.sidebar.text_input("OpenAI API Key", type="password", 
+                                   help="请输入你的OpenAI API密钥")
+    
+    if api_key:
+        os.environ['OPENAI_API_KEY'] = api_key
+        st.sidebar.success("✅ API密钥已设置")
+    else:
+        st.sidebar.warning("⚠️ 请设置OpenAI API密钥")
 
 # 初始化session state
 if 'choreography_result' not in st.session_state:
