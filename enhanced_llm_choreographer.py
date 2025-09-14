@@ -211,7 +211,7 @@ Few-shot示例：
 
         # 构建用户提示
         user_prompt = f"""音频特征分析：
-- BPM: {audio_features.get('bpm', 120):.1f}
+- BPM: {float(audio_features.get('bpm', 120)):.1f}
 - 能量等级: {audio_features.get('energy_level', 'medium')}
 - 舞蹈风格: {dance_style}
 - 片段数量: {len(segments)}
@@ -279,7 +279,7 @@ Few-shot示例：
             
             fallback_segment = {
                 "idx": i,
-                "time": f"{segment['start_time']:.1f}s-{segment['end_time']:.1f}s",
+                "time": f"{float(segment['start_time']):.1f}s-{float(segment['end_time']):.1f}s",
                 "accent": random.choice(["strong", "medium", "weak"]),
                 "level": random.choice(["high", "mid", "low", "floor"]),
                 "plane": random.choice(["frontal", "sagittal", "transverse"]),

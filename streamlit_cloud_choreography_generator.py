@@ -36,7 +36,7 @@ class StreamlitCloudChoreographyGenerator:
             dance_style = analysis_result['dance_style']
             
             print(f"🎭 检测到舞蹈风格: {dance_style}")
-            print(f"📈 音频特征: BPM={audio_info['bpm']:.1f}, 时长={audio_info['duration']:.1f}s")
+            print(f"📈 音频特征: BPM={float(audio_info['bpm']):.1f}, 时长={float(audio_info['duration']):.1f}s")
             
             # 3. 生成编舞
             print("🎨 步骤2: 生成结构化编舞...")

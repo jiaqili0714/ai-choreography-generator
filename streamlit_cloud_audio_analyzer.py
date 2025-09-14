@@ -248,7 +248,7 @@ class StreamlitCloudAudioAnalyzer:
             'style_confidence': features['style_features']['style_confidence']
         }
         
-        print(f"✅ 分析完成！检测到 {len(segments)} 个8拍片段，BPM: {features['tempo']:.1f}")
+        print(f"✅ 分析完成！检测到 {len(segments)} 个8拍片段，BPM: {float(features['tempo']):.1f}")
         print(f"🎭 推荐舞蹈风格: {result['dance_style']}")
         
         return result
