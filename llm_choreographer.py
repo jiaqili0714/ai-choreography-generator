@@ -12,8 +12,8 @@ class LLMChoreographer:
         if not config.OPENAI_API_KEY:
             raise ValueError("请设置OPENAI_API_KEY环境变量")
         
-        # 使用旧版本OpenAI API
-        openai.api_key = config.OPENAI_API_KEY
+        # 使用新版本OpenAI API (1.0.0+)
+        self.client = openai.OpenAI(api_key=config.OPENAI_API_KEY)
         print(f"🔧 LLMChoreographer初始化完成，使用增强版舞蹈参考系统")
     
     def _call_openai(self, messages, max_tokens=100, temperature=0.7):
@@ -21,7 +21,7 @@ class LLMChoreographer:
         print(f"📞 调用OpenAI API，消息数量: {len(messages)}")
         
         try:
-            response = openai.ChatCompletion.create(
+            response = self.client.chat.completions.create(
                 model="gpt-3.5-turbo",
                 messages=messages,
                 max_tokens=max_tokens,
