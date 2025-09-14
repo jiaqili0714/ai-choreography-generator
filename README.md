@@ -20,7 +20,7 @@
 
 1. **克隆项目**
 ```bash
-git clone https://github.com/your-username/ai-choreography-generator.git
+git clone https://github.com/jiaqili0714/ai-choreography-generator.git
 cd ai-choreography-generator
 ```
 
