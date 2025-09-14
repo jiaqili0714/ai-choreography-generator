@@ -34,21 +34,27 @@ st.markdown("""
 st.sidebar.header("⚙️ 配置")
 st.sidebar.markdown("### API设置")
 
-# 尝试从Streamlit secrets中获取API密钥
-try:
-    api_key = st.secrets["OPENAI_API_KEY"]
-    st.sidebar.success("✅ API密钥已从配置中加载")
+# 用户输入API密钥
+api_key = st.sidebar.text_input("OpenAI API Key", type="password", 
+                               help="请输入你的OpenAI API密钥")
+
+# 设置环境变量
+if api_key:
     os.environ['OPENAI_API_KEY'] = api_key
-except (KeyError, AttributeError):
-    # 如果secrets中没有，则显示输入框（用于本地开发）
-    api_key = st.sidebar.text_input("OpenAI API Key", type="password", 
-                                   help="请输入你的OpenAI API密钥")
+    st.sidebar.success("✅ API密钥已设置")
+else:
+    st.sidebar.warning("⚠️ 请设置OpenAI API密钥")
+
+# 添加API密钥获取帮助
+with st.sidebar.expander("🔑 如何获取API密钥"):
+    st.markdown("""
+    1. 访问: https://platform.openai.com/api-keys
+    2. 点击 "Create new secret key"
+    3. 复制生成的密钥（以sk-开头）
+    4. 粘贴到上方输入框中
     
-    if api_key:
-        os.environ['OPENAI_API_KEY'] = api_key
-        st.sidebar.success("✅ API密钥已设置")
-    else:
-        st.sidebar.warning("⚠️ 请设置OpenAI API密钥")
+    **注意**: 你的API密钥只会在当前会话中使用，不会被保存。
+    """)
 
 # 初始化session state
 if 'choreography_result' not in st.session_state:

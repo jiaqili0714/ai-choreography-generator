@@ -14,7 +14,12 @@
 ## 🚀 快速开始
 
 ### 在线体验
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://your-app-name.streamlit.app/)
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://ai-choreography-generator.streamlit.app/)
+
+**使用步骤**:
+1. 访问应用链接
+2. 在侧边栏输入你的OpenAI API密钥
+3. 上传音频文件开始生成编舞
 
 ### 本地运行
 
@@ -29,15 +34,29 @@ cd ai-choreography-generator
 pip install -r requirements.txt
 ```
 
-3. **设置API密钥**
-```bash
-export OPENAI_API_KEY="your-openai-api-key"
-```
-
-4. **启动应用**
+3. **启动应用**
 ```bash
 streamlit run app.py
 ```
+
+4. **设置API密钥**
+- 在应用侧边栏输入你的OpenAI API密钥
+- 或设置环境变量: `export OPENAI_API_KEY="your-api-key"`
+
+## 🔑 获取OpenAI API密钥
+
+1. **访问OpenAI平台**: https://platform.openai.com/api-keys
+2. **登录账户**: 使用OpenAI账户登录
+3. **创建密钥**: 点击 "Create new secret key"
+4. **设置名称**: 给密钥起个名字，比如 "AI Choreography Generator"
+5. **复制密钥**: 复制生成的密钥（以sk-开头）
+6. **粘贴使用**: 在应用中粘贴密钥
+
+**注意事项**:
+- ✅ API密钥以 `sk-` 开头
+- ✅ 密钥只显示一次，请妥善保存
+- ✅ 确保账户有足够余额
+- ✅ 密钥只在当前会话中有效
 
 ## 🎯 使用方法
 
