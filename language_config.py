@@ -67,7 +67,16 @@ TEXTS_ZH = {
     'dance_suggestions': '舞蹈建议',
     'no_suggestions': '暂无建议',
     'download_audio': '下载音频文件',
-    'language_selector': '语言选择'
+    'language_selector': '语言选择',
+    'file_upload_success': '文件上传成功',
+    'file_size': '文件大小',
+    'choreography_success': '编舞生成成功',
+    'duration': '时长',
+    'total_beats': '节拍数',
+    'segment_count': '片段数',
+    'switch_to_player': '编舞生成完成！请切换到音乐播放器标签页开始练习',
+    'upload_first': '请先上传音频文件并生成编舞',
+    'download': '下载'
 }
 
 # 英文文本
@@ -128,7 +137,16 @@ Supported formats: MP3, WAV
     'dance_suggestions': 'Dance Suggestions',
     'no_suggestions': 'No suggestions available',
     'download_audio': 'Download Audio File',
-    'language_selector': 'Language'
+    'language_selector': 'Language',
+    'file_upload_success': 'File uploaded successfully',
+    'file_size': 'File size',
+    'choreography_success': 'Choreography generated successfully',
+    'duration': 'Duration',
+    'total_beats': 'Total beats',
+    'segment_count': 'Segment count',
+    'switch_to_player': 'Choreography generation complete! Please switch to the Music Player tab to start practicing',
+    'upload_first': 'Please upload an audio file and generate choreography first',
+    'download': 'Download'
 }
 
 def get_text(key, language='zh'):
